@@ -1,5 +1,15 @@
 let tileSize = 100;
+let sheetWidth = 2000;
+let sheetHeight = 667;
+let pieceWidth = sheetWidth / 6;
+let pieceHeight = sheetHeight / 2;
+let spritesheet;
 let board = new Board();
+
+function preload()
+{
+    spritesheet = loadImage("spritesheet.png");
+}
 
 function setup()
 {
@@ -20,11 +30,11 @@ function showGrid()
         {
             if ((rank + file) % 2 == 0)
             {
-                fill(255);
+                fill(255, 219, 170);
             }
             else
             {
-                fill(0);
+                fill(0, 74, 0);
             }
 
             rect(file * tileSize, rank * tileSize, tileSize);
