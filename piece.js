@@ -6,6 +6,7 @@ class Piece
         this.pixelPosition = {x: x * tileSize, y: (((y - 8) * -1) - 1) * tileSize};
 
         this.isWhite = white;
+        this.isPickedUp = false;
         this.isTaken = false;
         this.sy = white ? 0 : pieceHeight + 1;
     }
@@ -14,6 +15,12 @@ class Piece
     {
         this.pixelPosition.x = this.boardPosition.x * tileSize;
         this.pixelPosition.y = (((this.boardPosition.y - 8) * -1) -1) * tileSize;
+    }
+
+    followMouse()
+    {
+        this.pixelPosition.x = mousex - (tileSize / 2);
+        this.pixelPosition.y = mousey - (tileSize / 2);
     }
 }
 class Rook extends Piece 
@@ -26,8 +33,12 @@ class Rook extends Piece
 
     show()
     {
-        //canvas.drawImage(spritesheet, pieceWidth * 4, 0, pieceWidth, pieceHeight, this.x, this.y, 60, 60);
-        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, 100, 100, this.sx, this.sy, pieceWidth, pieceHeight);
+        if (this.isPickedUp) 
+        {
+            this.followMouse();
+        }
+
+        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight);
     }
 }
 
@@ -41,7 +52,11 @@ class Knight extends Piece
 
     show()
     {
-        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, 100, 100, this.sx, this.sy, pieceWidth, pieceHeight);
+        if (this.isPickedUp) 
+        {
+            this.followMouse();
+        }
+        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight);
     }
 }
 
@@ -55,7 +70,11 @@ class Bishop extends Piece
 
     show()
     {
-        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, 100, 100, this.sx, this.sy, pieceWidth, pieceHeight);
+        if (this.isPickedUp) 
+        {
+            this.followMouse();
+        }
+        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight);
     }
 }
 
@@ -69,7 +88,11 @@ class King extends Piece
 
     show()
     {
-        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, 100, 100, this.sx, this.sy, pieceWidth, pieceHeight);
+        if (this.isPickedUp) 
+        {
+            this.followMouse();
+        }
+        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight);
     }
 }
 
@@ -83,7 +106,11 @@ class Queen extends Piece
 
     show()
     {
-        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, 100, 100, this.sx, this.sy, pieceWidth, pieceHeight);
+        if (this.isPickedUp) 
+        {
+            this.followMouse();
+        }
+        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight);
     }
 }
 
@@ -97,6 +124,10 @@ class Pawn extends Piece
 
     show()
     {
-        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, 100, 100, this.sx, this.sy, pieceWidth, pieceHeight);
+        if (this.isPickedUp) 
+        {
+            this.followMouse();
+        }
+        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight);
     }
 }

@@ -1,10 +1,12 @@
-let tileSize = 100;
+let tileSize;
 let sheetWidth = 2000;
 let sheetHeight = 667;
 let pieceWidth = sheetWidth / 6;
 let pieceHeight = sheetHeight / 2;
 let spritesheet;
-let board = new Board();
+let board;
+let mousex;
+let mousey;
 
 function preload()
 {
@@ -13,11 +15,25 @@ function preload()
 
 function setup()
 {
-    createCanvas(800,800);
+    if (windowWidth > windowHeight)
+    {
+        createCanvas(windowHeight - 100,windowHeight - 100);
+
+        tileSize = (windowHeight -100) / 8;
+    }
+    else 
+    {
+        createCanvas(windowWidth,windowWidth);
+
+        tileSize = windowWidth / 8;
+    }
+
+    board = new Board();
 }
 
 function draw() 
 {
+    updateMousePos();
     showGrid();
     board.show();
 }
@@ -39,5 +55,35 @@ function showGrid()
 
             rect(file * tileSize, rank * tileSize, tileSize);
         }
+    }
+}
+
+function updateMousePos() 
+{
+    mousex = mouseX;
+    mousey = mouseY;
+}
+
+function mouseIsWithinBoard()
+{
+    if ((mouseX > 0 && mouseX < board.width) && (mouseY > 0 && mouseY < board.width))
+    {
+        return true;
+    } 
+    else 
+    {
+        return false;
+    }
+}
+
+function mousePressed()
+{
+    if(!board.isHoldingPiece && mouseIsWithinBoard()) // if mouse is within the board and not holding a piece
+    {
+        board.pickUpPiece(mouseX, mouseY);
+    }
+    else if (board.isHoldingPiece && mouseIsWithinBoard())
+    {
+        board.putDownPiece(mouseX, mouseY);
     }
 }
