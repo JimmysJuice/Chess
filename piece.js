@@ -5,10 +5,11 @@ class Piece
         this.boardPosition = {x: x, y: y};
         this.pixelPosition = {x: x * tileSize, y: (((y - 8) * -1) - 1) * tileSize};
 
+        this.sy = white ? 0 : pieceHeight + 1;
         this.isWhite = white;
         this.isPickedUp = false;
         this.isTaken = false;
-        this.sy = white ? 0 : pieceHeight + 1;
+        this.hasMoved = false;
     }
 
     updatePixelPosition()
@@ -22,6 +23,13 @@ class Piece
         this.pixelPosition.x = mousex - (tileSize / 2);
         this.pixelPosition.y = mousey - (tileSize / 2);
     }
+
+    take()
+    {
+        this.isTaken = true;
+        this.boardPosition.x = null;
+        this.boardPosition.y = null;
+    }
 }
 class Rook extends Piece 
 {
@@ -29,16 +37,20 @@ class Rook extends Piece
     {
         super(x, y, white);
         this.sx = pieceWidth * 4;
+        this.name = "rook";
     }
 
     show()
     {
-        if (this.isPickedUp) 
+        if (!this.isTaken)
         {
-            this.followMouse();
+            if (this.isPickedUp) 
+            {
+                this.followMouse();
+            }
+    
+            image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight);
         }
-
-        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight);
     }
 }
 
@@ -48,15 +60,20 @@ class Knight extends Piece
     {
         super(x, y, white);
         this.sx = pieceWidth * 3;
+        this.name = "knight";
     }
 
     show()
     {
-        if (this.isPickedUp) 
+        if (!this.isTaken)
         {
-            this.followMouse();
+            if (this.isPickedUp) 
+            {
+                this.followMouse();
+            }
+
+            image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight);
         }
-        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight);
     }
 }
 
@@ -66,15 +83,20 @@ class Bishop extends Piece
     {
         super(x, y, white);
         this.sx = pieceWidth * 2;
+        this.name = "bishop";
     }
 
     show()
     {
-        if (this.isPickedUp) 
+        if (!this.isTaken)
         {
-            this.followMouse();
+            if (this.isPickedUp) 
+            {
+                this.followMouse();
+            }
+
+            image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight);
         }
-        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight);
     }
 }
 
@@ -84,15 +106,21 @@ class King extends Piece
     {
         super(x, y, white);
         this.sx = 0;
+        this.name = "king";
     }
 
     show()
     {
-        if (this.isPickedUp) 
+        if (!this.isTaken)
         {
-            this.followMouse();
+            if (this.isPickedUp) 
+            {
+                this.followMouse();
+            }
+
+            image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight);
         }
-        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight);
+
     }
 }
 
@@ -102,15 +130,20 @@ class Queen extends Piece
     {
         super(x, y, white);
         this.sx = pieceWidth;
+        this.name = "queen";
     }
 
     show()
     {
-        if (this.isPickedUp) 
+        if (!this.isTaken)
         {
-            this.followMouse();
+            if (this.isPickedUp) 
+            {
+                this.followMouse();
+            }
+
+            image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight); 
         }
-        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight);
     }
 }
 
@@ -120,14 +153,19 @@ class Pawn extends Piece
     {
         super(x, y, white);
         this.sx = pieceWidth * 5;
+        this.name = "pawn";
     }
 
     show()
     {
-        if (this.isPickedUp) 
+        if (!this.isTaken)
         {
-            this.followMouse();
+            if (this.isPickedUp) 
+            {
+                this.followMouse();
+            }
+
+            image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight);
         }
-        image(spritesheet, this.pixelPosition.x, this.pixelPosition.y, tileSize, tileSize, this.sx, this.sy, pieceWidth, pieceHeight);
     }
 }

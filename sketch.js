@@ -15,6 +15,7 @@ function preload()
 
 function setup()
 {
+    // setting up size of canvas according to window size
     if (windowWidth > windowHeight)
     {
         createCanvas(windowHeight - 100,windowHeight - 100);

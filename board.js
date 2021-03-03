@@ -6,6 +6,7 @@ class Board
         this.blackPieces = [];
         this.width = tileSize * 8;
         this.isHoldingPiece = false;
+        this.heldPiece = {};
         this.isWhitesTurn = true;
 
         this.setUpPieces();
@@ -54,55 +55,124 @@ class Board
     {
         for (let i = 0; i < this.whitePieces.length; i++)
         {
-            this.whitePieces[i].show();
+            if (!this.whitePieces[i].isTaken)
+            {
+                this.whitePieces[i].show();
+            }
         }
         for (let i = 0; i < this.blackPieces.length; i++)
         {
             this.blackPieces[i].show();
         }
+
+        if (this.isHoldingPiece)
+        {
+            this.heldPiece.show();
+        }
     }
 
-    findPiece(x, y)
+    idSquare(x, y)
     {
-        x = Math.floor(x / tileSize);
-        y = (Math.floor(y / tileSize) -7) * -1;
+        let square = {};
+        square.isEmpty = true;
 
-        if (this.isWhitesTurn)
+        square.x = Math.floor(x / tileSize);
+        square.y = (Math.floor(y / tileSize) -7) * -1;
+        
+        for (let i = 0; i < this.whitePieces.length; i++)
         {
-            for (let i = 0; i < this.whitePieces.length; i++)
+            if (this.whitePieces[i].boardPosition.x === square.x && this.whitePieces[i].boardPosition.y === square.y)
             {
-                if (this.whitePieces[i].boardPosition.x === x && this.whitePieces[i].boardPosition.y === y)
-                {
-                    return this.whitePieces[i];
-                }
+                square.piece = this.whitePieces[i];
+                square.isEmpty = false;
+                return square;
             }
-            return null;
         }
-        else
+        
+        for (let i = 0; i < this.blackPieces.length; i++)
         {
-            for (let i = 0; i < this.blackPieces.length; i++)
+            if (this.blackPieces[i].boardPosition.x === square.x && this.blackPieces[i].boardPosition.y === square.y)
             {
-                if (this.blackPieces[i].boardPosition.x === x && this.blackPieces[i].boardPosition.y === y)
-                {
-                    return this.blackPieces[i];
-                }
+                square.piece = this.blackPieces[i];
+                square.isEmpty = false;
+                return square;
             }
-            return null;
         }
+
+        return square;
+    }
+
+    isOffBoard(x, y)
+    {
+        if (x < 0 || x > 7 || y < 0 || y > 7)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    isLegalMove(square)
+    {
+        if (!square.isEmpty)
+        {
+            if (this.heldPiece.isWhite === square.piece.isWhite)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     pickUpPiece(x, y)
     {
-        let piece = this.findPiece(x, y);
-        if (piece != null)
+        let square = this.idSquare(x, y);
+
+        if (!square.isEmpty && square.piece.isWhite === this.isWhitesTurn)
         {
-            piece.isPickedUp = true;
+            this.heldPiece = square.piece;
+            square.piece.isPickedUp = true;
             board.isHoldingPiece = true;
         }
     }
 
     putDownPiece(x, y)
     {
-        //need to change findPiece function to findsquare
+        let square = this.idSquare(x, y);
+
+        if (this.isLegalMove(square))
+        {
+            if (!square.isEmpty) 
+            {
+                square.piece.take();
+            }
+
+            this.heldPiece.boardPosition.x = square.x;
+            this.heldPiece.boardPosition.y = square.y;
+            this.heldPiece.updatePixelPosition();
+
+            if(!this.heldPiece.hasMoved)
+            {
+                this.heldPiece.hasMoved = true;
+            }
+
+
+            board.isHoldingPiece = false;
+            this.heldPiece.isPickedUp = false;
+
+            if (this.isWhitesTurn)
+            {
+                this.isWhitesTurn = false;
+            }
+            else
+            {
+                this.isWhitesTurn = true;
+            }
+        }
+        else
+        {
+            this.heldPiece.updatePixelPosition();
+            board.isHoldingPiece = false;
+            this.heldPiece.isPickedUp = false;
+        }
     }
 }
