@@ -432,5 +432,8 @@ class Board
             board.isHoldingPiece = false;
             this.heldPiece.isPickedUp = false;
         }
+
+        this.heldPieceValidMoves = [];
     }
+
 }

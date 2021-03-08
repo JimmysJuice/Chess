@@ -41,20 +41,48 @@ function draw()
 
 function showGrid()
 {
+    let isRedSquare = false;
+    let i = 0;
+    noStroke();
+
     for (let file = 0; file < 8; file++)
     {
         for (let rank = 0; rank < 8; rank++)
         {
+            while (i < board.heldPieceValidMoves.length && !isRedSquare)
+            {
+                if (board.heldPieceValidMoves[i].x === file && board.heldPieceValidMoves[i].y === ((rank - 8) * -1) - 1)
+                {
+                    isRedSquare = true;
+                }
+                i++;
+            }
+
+            i = 0;
+
             if ((rank + file) % 2 == 0)
             {
-                fill(255, 219, 170);
+                if(isRedSquare) {
+                    fill(255, 74, 0);
+                }
+                else
+                {
+                    fill(255, 219, 170);
+                }
             }
             else
             {
-                fill(0, 74, 0);
+                if(isRedSquare) {
+                    fill(255, 0, 0);
+                }
+                else
+                {
+                    fill(0, 74, 0);
+                }
+                
             }
-
             rect(file * tileSize, rank * tileSize, tileSize);
+            isRedSquare = false;
         }
     }
 }
